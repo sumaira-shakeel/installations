@@ -1,0 +1,110 @@
+Free Claude Code Setup with Google Gemini
+
+Node.js 18+ (nodejs.org)
+
+Verify Node.js (if unsure):
+
+node --version # Should show v18.x.x or higher
+
+If missing, install from nodejs.org
+
+Step 1: Get Your Free Google API Key
+
+Go 
+
+
+to: Google AI Studio
+Click "Get API Key"
+
+Sign in with Google
+
+Click "Create API Key"
+
+Copy the key (looks like: AIzaSyAaBbCcDd...)
+
+Step 2: Copy-Paste Setup
+
+Just copy commands from this block and paste into terminal:
+
+
+# Install tools
+npm install -g @anthropic-ai/claude-code @musistudio/claude-code-router
+# Create config directories
+mkdir $HOME/.claude-code-router
+
+mkdir $HOME/.claude
+# Create router config (Windows Method)
+notepad $HOME/.claude-code-router/config.json
+
+{
+"LOG": true,
+"LOG_LEVEL": "info",
+"HOST": "127.0.0.1",
+"PORT": 3456,
+"API_TIMEOUT_MS": 600000,
+"Providers": [
+{
+"name": "gemini",
+"api_base_url": "https://generativelanguage.googleapis.com/v1beta/models/",
+"api_key": "$GOOGLE_API_KEY",
+"models": [
+"gemini-2.5-flash",
+"gemini-2.0-flash"
+],
+"transformer": {
+"use": ["gemini"]
+}
+}
+],
+"Router": {
+"default": "gemini,gemini-2.5-flash",
+"background": "gemini,gemini-2.5-flash",
+"think": "gemini,gemini-2.5-flash",
+"longContext": "gemini,gemini-2.5-flash",
+"longContextThreshold": 60000
+}
+}
+Save & Close Powershell
+
+# Windows PowerShell (Run as Administrator)
+[System.Environment]::SetEnvironmentVariable('GOOGLE_API_KEY', 'YOUR_KEY_HERE', 'User')
+# Then CLOSE and REOPEN PowerShell completely
+
+# Verify it worked:
+echo $env:GOOGLE_API_KEY
+
+Verify Setup Worked
+
+After pasting setup commands, verify immediately:
+
+claude --version # Should show: Claude Code v2.x.x
+ccr version # it will show version number (without hyphen)
+echo $GOOGLE_API_KEY # Should show your key (not empty!)
+# If any fail, see Troubleshooting section
+
+Done! That's the entire setup.
+
+Step 3: Daily Workflow
+
+Every time you want to code:
+
+Terminal 1 - Start router FIRST
+
+ccr start
+# Wait for:
+
+Service started successfully
+
+THEN use Claude (after router is ready)
+
+cd ~/your-project
+# Use
+ccr code
+# OR
+claude
+
+Verification
+
+sey hi
+
+hi
